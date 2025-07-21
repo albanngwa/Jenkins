@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     stages {
-
         stage('Build') {
             agent {
                 docker {
@@ -21,6 +20,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Tests') {
             parallel {
                 stage('Test') {
@@ -43,12 +43,13 @@ pipeline {
                         }
                     }
                 }
+
                 stage('E2E') {
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-focal'
                             reuseNode true
-                        // args '-u root:root'
+                            // args '-u root:root'
                         }
                     }
                     steps {
@@ -77,19 +78,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true 
+                }
+            }
+            steps {
+                sh '''
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
+                '''
+            }
+        }
     }
 }
-                stage('Deploy') {
-                    agent {
-                        docker {
-                            image 'node:18-alpine'
-                            reuseNode true 
-                        }
-                    }
-                    steps {
-                        sh '''
-                        npm install netlify-cli
-                        node_modules/.bin/netlify --version
-                        '''
-                    }
-        }
