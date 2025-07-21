@@ -3,7 +3,6 @@ pipeline {
 
     stages {
         /*
-
         stage('Build') {
             agent {
                 docker {
@@ -39,18 +38,18 @@ pipeline {
                             npm test
                         '''
                     }
-                }
                     post {
                         always {
                             junit 'jest-results/junit.xml'
                         }
                     }
+                }
                 stage('E2E') {
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-focal'
                             reuseNode true
-                        // args '-u root:root'
+                            // args '-u root:root'
                         }
                     }
                     steps {
@@ -63,13 +62,21 @@ pipeline {
                     }
                     post {
                         always {
-
-                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                icon: '',
+                                keepAll: false,
+                                reportDir: 'playwright-report',
+                                reportFiles: 'index.html',
+                                reportName: 'playwright HTML Report',
+                                reportTitles: '',
+                                useWrapperFileDirectly: true
+                            ])
                         }
                     }
                 }
             }
-
         }
     }
 }
