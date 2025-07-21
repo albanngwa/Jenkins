@@ -112,7 +112,7 @@ pipeline {
                 }
             }
             environment {
-            CI_ENVIRONMENT_URL = https://dainty-llama-3e7693.netlify.app
+            CI_ENVIRONMENT_URL = "https://dainty-llama-3e7693.netlify.app"
         }
 
             steps {
