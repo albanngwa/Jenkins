@@ -70,7 +70,9 @@ pipeline {
                                 allowMissing: false,
                                 reportDir: 'playwright-report',
                                 reportFiles: 'index.html',
-                                reportName: 'playwright Local'
+                                reportName: 'playwright Local',
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true
                             ])
                         }
                     }
@@ -120,7 +122,9 @@ pipeline {
                         allowMissing: false,
                         reportDir: 'playwright-report',
                         reportFiles: 'index.html',
-                        reportName: 'Staging E2E'
+                        reportName: 'Staging E2E',
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true
                     ])
                 }
             }
@@ -170,7 +174,9 @@ pipeline {
                         allowMissing: false,
                         reportDir: 'playwright-report',
                         reportFiles: 'index.html',
-                        reportName: 'Prod E2E'
+                        reportName: 'Prod E2E',
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true
                     ])
                 }
             }
