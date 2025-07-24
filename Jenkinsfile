@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = 'YOUR NETLIFY SITE ID'
+        NETLIFY_SITE_ID = 'https://dainty-llama-3e7693.netlify.app/'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
 
@@ -124,7 +124,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'YOUR NETLIFY URL'
+                CI_ENVIRONMENT_URL = 'https://dainty-llama-3e7693.netlify.app/'
             }
 
             steps {
