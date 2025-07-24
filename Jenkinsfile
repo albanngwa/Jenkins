@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = 'https://dainty-llama-3e7693.netlify.app/'
+        NETLIFY_SITE_ID = '4c2a28cc-7eb9-4657-bfd4-828251cbfab8
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
 
