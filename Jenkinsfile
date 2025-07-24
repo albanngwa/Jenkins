@@ -61,6 +61,7 @@ pipeline {
                             npm install serve
                             node_modules/.bin/serve -s build &
                             sleep 10
+                            npx playwright install --with-deps
                             npx playwright test --reporter=html
                         '''
                     }
@@ -87,32 +88,19 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                CI_ENVIRONMENT = 'STAGING_URL_TO_BE_SET'
+            }
             steps {
                 sh '''
-                    npm install netlify-cli@20.1.1 node-jq
+                    npm install netlify-cli node-jq
+                    node_modules/.bin/netlify --version
+                    echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
-                '''
-                script {
-                    def url = sh(
-                        script: "node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json",
-                        returnStdout: true
-                    ).trim()
-                    env.STAGING_URL = url
-                    echo "Staging URL is: ${env.STAGING_URL}"
-                }
-            }
-        }
-
-        stage('Staging E2E') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-focal'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    echo "Using staging URL: $STAGING_URL"
+                    STAGING_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json)
+                    echo "Running E2E against: $STAGING_URL"
+                    CI_ENVIRONMENT_URL=$STAGING_URL npx playwright install --with-deps
                     CI_ENVIRONMENT_URL=$STAGING_URL npx playwright test --reporter=html
                 '''
             }
@@ -156,6 +144,7 @@ pipeline {
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --prod
+                    npx playwright install --with-deps
                     npx playwright test --reporter=html
                 '''
             }
