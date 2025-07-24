@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -70,9 +71,7 @@ pipeline {
                                 allowMissing: false,
                                 reportDir: 'playwright-report',
                                 reportFiles: 'index.html',
-                                reportName: 'playwright Local',
-                                alwaysLinkToLastBuild: true,
-                                keepAll: true
+                                reportName: 'playwright Local'
                             ])
                         }
                     }
@@ -122,9 +121,7 @@ pipeline {
                         allowMissing: false,
                         reportDir: 'playwright-report',
                         reportFiles: 'index.html',
-                        reportName: 'Staging E2E',
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true
+                        reportName: 'Staging E2E'
                     ])
                 }
             }
@@ -148,6 +145,9 @@ pipeline {
             steps {
                 sh '''
                     npm install netlify-cli@20.1.1
+                    node_modules/.bin/netlify --version
+                    echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --prod
                 '''
             }
@@ -165,6 +165,12 @@ pipeline {
             }
             steps {
                 sh '''
+                    node --version
+                    npm install netlify-cli@20.1.1
+                    node_modules/.bin/netlify --version
+                    echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod
                     npx playwright test --reporter=html
                 '''
             }
@@ -174,9 +180,7 @@ pipeline {
                         allowMissing: false,
                         reportDir: 'playwright-report',
                         reportFiles: 'index.html',
-                        reportName: 'Prod E2E',
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true
+                        reportName: 'Prod E2E'
                     ])
                 }
             }
