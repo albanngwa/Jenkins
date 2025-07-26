@@ -15,6 +15,9 @@ pipeline {
                     args "--entrypoint='"
                 }
             }
+            environment {
+                AWS_S3_BUCKET = 'learn-jenkins10'
+            }
             steps {
                 /* groovylint-disable-next-line DuplicateStringLiteral */
                 withCredentials([usernamePassword(credentialsId: 'AWS',
@@ -24,7 +27,7 @@ pipeline {
                 sh '''
                     aws --version
                     echo "Hello s3!" > index.html
-                    aws s3 cp index.html s3://learn-jenkins10/index.html
+                    aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
                 '''
                 }
             }
