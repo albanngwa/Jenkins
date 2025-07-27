@@ -14,9 +14,6 @@ pipeline {
                     args "--entrypoint=''" 
                 }
             }
-            environment {
-                // No additional env vars declared here (can be removed or used)
-            }
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'AWS',
