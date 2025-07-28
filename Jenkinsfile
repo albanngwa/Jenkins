@@ -4,9 +4,9 @@ pipeline {
     environment {
         REACT_APP_VERSION = "1.2.$BUILD_ID"
         AWS_DEFAULT_REGION = 'us-east-2'
-        AWS_ECS_CLUSTER = '$AWS_ECS_CLUSTER'
-        AWS_ECS_SERVICE_PROD = '$AWS_ECS_SERVICE_PROD'
-        AWS_ECS_TD_PROD = '$AWS_ECS_TD_PROD'
+        AWS_ECS_CLUSTER = 'AWS_ECS_CLUSTER'
+        AWS_ECS_SERVICE_PROD = 'AWS_ECS_SERVICE_PROD'
+        AWS_ECS_TD_PROD = 'AWS_ECS_TD_PROD'
 
     }
 
