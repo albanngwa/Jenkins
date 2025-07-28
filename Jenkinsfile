@@ -5,6 +5,7 @@ pipeline {
         REACT_APP_VERSION = "1.2.$BUILD_ID"
         APP_NAME = 'jenkinsapp'
         AWS_DEFAULT_REGION = 'us-east-2'
+        AWS_DOCKER_REGISTRY = '912290106707.dkr.ecr.us-east-2.amazonaws.com'
         AWS_ECS_CLUSTER = 'Jenkinsapp-Cluster-Prod'
         AWS_ECS_SERVICE_PROD = 'JenkinsApp-Service-Prod'
         AWS_ECS_TD_PROD = 'JenkinsApp-TaskDefinition-Prod'
@@ -41,7 +42,9 @@ pipeline {
             steps {
                 sh''' 
                     dnf install -y docker
-                    docker build -t ${APP_NAME,,}:$REACT_APP_VERSION .
+                    docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION .
+                    aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
+                    docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION
                 '''
             }
         }
