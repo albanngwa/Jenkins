@@ -32,7 +32,7 @@ pipeline {
         stage('Build Docker image') {
             agent {
                 docker {
-                    image 'amazon/aws-cli'
+                    image 'my-aws-cli'
                     reuseNode true
                     args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''" 
                 }
@@ -47,7 +47,7 @@ pipeline {
         stage('Deploy to AWS') {
             agent {
                 docker {
-                    image 'amazon/aws-cli'
+                    image 'my-aws-cli'
                     reuseNode true
                     args "-u root --entrypoint=''" 
                 }
@@ -60,7 +60,6 @@ pipeline {
                 )]) {
                     sh '''
                         aws --version
-                        yum install jq -y
                         LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition-Prod.json | jq '.taskDefinition.revision')
                         echo $LATEST_TD_REVISION
                         aws ecs update-service --cluster $AWS_ECS_CLUSTER --service $AWS_ECS_SERVICE_PROD --task-definition $AWS_ECS_TD_PROD:$LATEST_TD_REVISION
